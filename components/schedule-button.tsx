@@ -1,28 +1,28 @@
-"use client"
-
 import React from "react"
-import { useRouter } from "next/navigation"
 
+import { PromptResponse } from "@/types/openai/response.type"
 import { cn } from "@/lib/utils"
+import { promptResponseSchema } from "@/lib/validations/openai"
+import { ButtonProps, buttonVariants } from "@/components/ui/button"
+import { toast } from "@/components/ui/use-toast"
+import { Icons } from "@/components/icons"
 
-import { Icons } from "./icons"
-import { ButtonProps, buttonVariants } from "./ui/button"
-import { toast } from "./ui/use-toast"
-
-interface ScheduleButtonProps extends ButtonProps {}
+interface ScheduleButtonProps extends ButtonProps {
+  onScheduleComplete: (promptResponse: PromptResponse) => void
+}
 
 export function ScheduleButton({
   className,
   variant,
+  onScheduleComplete,
   ...props
 }: ScheduleButtonProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const router = useRouter()
 
   async function onClick() {
     setIsLoading(true)
 
-    const response = await fetch("/api/schedule", {
+    const response = await fetch("/api/schedule/calculate", {
       method: "POST",
     })
 
@@ -36,8 +36,9 @@ export function ScheduleButton({
       })
     }
 
-    // This forces a cache invalidation.
-    router.refresh()
+    const promptResponse = await response.json()
+    const parsedPromptResponse = promptResponseSchema.parse(promptResponse)
+    onScheduleComplete(parsedPromptResponse)
   }
 
   return (

@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth/next"
 import { z } from "zod"
 
 import { PromptRequest } from "@/types/openai/request.type"
-import { PromptResponse } from "@/types/openai/response.type"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { openai } from "@/lib/openai"
