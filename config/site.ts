@@ -1,8 +1,9 @@
 import { SiteConfig } from "types"
 
 export const siteConfig: SiteConfig = {
-  name: "ClassesGPT",
-  description: "A web application to help you organize your classes",
+  name: "schooler.ai",
+  description:
+    "A web application to help you organize your school schedules with AI",
   url: "https://classesgpt.app",
   ogImage: "https://classesgpt.app/og.jpg",
   links: {

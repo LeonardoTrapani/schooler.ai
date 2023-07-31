@@ -1,3 +1,7 @@
+# Schooler.ai
+
+A web application to help you organize your school schedules with AI
+
 ## Features
 
 - New `/app` dir,
@@ -16,17 +20,6 @@
 - Styled using **Tailwind CSS**
 - Validations using **Zod**
 - Written in **TypeScript**
-
-## Roadmap
-
-- [x] ~Add MDX support for basic pages~
-- [x] ~Build marketing pages~
-- [x] ~Subscriptions using Stripe~
-- [x] ~Responsive styles~
-- [x] ~Add OG image for blog using @vercel/og~
-- [x] Dark mode
-
-## Running Locally
 
 1. Install dependencies using pnpm:
 
