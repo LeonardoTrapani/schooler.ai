@@ -28,7 +28,7 @@ export function ScheduleDialog(props: ScheduleDialogProps) {
 
   return (
     <Dialog {...props}>
-      <DialogContent>
+      <DialogContent size="large">
         <DialogHeader>
           <DialogTitle>Are you sure?</DialogTitle>
           <DialogDescription>

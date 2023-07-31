@@ -59,7 +59,7 @@ export function ScheduleButton({
       ) : (
         <Icons.ai className="mr-2 h-4 w-4" />
       )}
-      New post
+      Generate Schedule
     </button>
   )
 }
