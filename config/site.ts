@@ -4,10 +4,10 @@ export const siteConfig: SiteConfig = {
   name: "schooler.ai",
   description:
     "A web application to help you organize your school schedules with AI",
-  url: "https://classesgpt.app",
-  ogImage: "https://classesgpt.app/og.jpg",
+  url: "https://schooler-ai.vercel.app/",
+  ogImage: "https://schooler-ai.vercel.app/og.jpg",
   links: {
-    github: "https://github.com/leonardotrapani/classesgpt",
+    github: "https://github.com/leonardotrapani/schooler.ai",
   },
   keywords: [
     "Schedule",
