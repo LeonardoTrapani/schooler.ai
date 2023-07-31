@@ -1,0 +1,175 @@
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
+  professors  Professor[]
+  subjects    Subject[]
+  sections    Section[]
+  preferences Preference[]
+
+  accounts Account[]
+  sessions Session[]
+
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+
+  @@map(name: "users")
+}
+
+model Professor {
+  id       String    @id @default(cuid())
+  name     String
+  subjects Subject[]
+
+  professorSections ProfessorSection[]
+  preference        Preference[]
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  classes   Class[]
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
+
+model Subject {
+  id   String  @id @default(cuid())
+  name String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  professors Professor[]
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+}
+
+model Section {
+  id   String  @id @default(cuid())
+  name String?
+
+  preferences       Preference[]
+  professorSections ProfessorSection[]
+  classes           Class[]
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+}
+
+model Class {
+  id    String @id @default(cuid())
+  start String
+  end   String
+  day   Int    @db.SmallInt
+
+  sectionId String?
+  section   Section? @relation(fields: [sectionId], references: [id])
+
+  professorId String?
+  professor   Professor? @relation(fields: [professorId], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+}
+
+model ProfessorSection {
+  id           String    @id @default(cuid())
+  professorId  String
+  sectionId    String
+  totalClasses Int
+  professor    Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  section      Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+}
+
+model Preference {
+  id         String @id @default(cuid())
+  preference String
+
+  userId    String?
+  User      User?    @relation(fields: [userId], references: [id])
+
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  professorId String?
+
+  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId String?
+
+  importance Importance
+
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+}
+
+enum Importance {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map(name: "verification_tokens")
+}
