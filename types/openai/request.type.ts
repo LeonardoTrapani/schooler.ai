@@ -1,5 +1,6 @@
 export type PromptRequest = {
   sections: {
+    name: string //the name of the section. Use this in the notes instead of the section ID
     id: string //sectionId
     classes: {
       id: string //classId
@@ -12,6 +13,10 @@ export type PromptRequest = {
   }[]
   professors: {
     id: string //professorId
+    name: string //the name of the professor. Use this in the notes instead of the professor ID
+    subjects: {
+      name: string //the name of the subject
+    }[]
     professorSections: {
       totalClasses: number //number of classes for each section of the professor
       sectionId: string

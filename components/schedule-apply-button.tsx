@@ -30,8 +30,8 @@ export function ScheduleApplyButton({
     promptResponse?.sections.forEach((section) =>
       formattedPromptResponse.push(
         ...section.classes.map((c) => ({
-          classId: c.classId,
-          professorId: c.professorId,
+          classId: c.id,
+          professorId: c.professor.id,
         }))
       )
     )

@@ -29,7 +29,7 @@ export async function POST() {
       openaidirectory + "/response.type.ts",
       "utf8"
     )
-    const promptRequest = await db.user.findUnique({
+    const promptRequest: PromptRequest | null = await db.user.findUnique({
       where: {
         id: session.user.id,
       },
@@ -37,6 +37,12 @@ export async function POST() {
         professors: {
           select: {
             id: true,
+            name: true,
+            subjects: {
+              select: {
+                name: true,
+              },
+            },
             professorSections: {
               select: {
                 totalClasses: true,
@@ -48,6 +54,7 @@ export async function POST() {
         sections: {
           select: {
             id: true,
+            name: true,
             classes: {
               select: {
                 id: true,
@@ -84,7 +91,7 @@ export async function POST() {
         },
         {
           role: "user",
-          content: JSON.stringify(promptRequest as PromptRequest),
+          content: JSON.stringify(promptRequest),
         },
       ],
       temperature: 0,

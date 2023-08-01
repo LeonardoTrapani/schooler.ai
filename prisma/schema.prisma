@@ -40,8 +40,8 @@ model Professor {
 }
 
 model Subject {
-  id   String  @id @default(cuid())
-  name String?
+  id   String @id @default(cuid())
+  name String
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -53,8 +53,8 @@ model Subject {
 }
 
 model Section {
-  id   String  @id @default(cuid())
-  name String?
+  id   String @id @default(cuid())
+  name String
 
   preferences       Preference[]
   professorSections ProfessorSection[]

@@ -5,13 +5,57 @@ export const promptResponseSchema = z.object({
   notes: z.array(z.string()),
   sections: z.array(
     z.object({
-      sectionId: z.string(),
+      id: z.string(),
+      name: z.string(),
       classes: z.array(
         z.object({
-          professorId: z.string(),
-          classId: z.string(),
+          id: z.string(),
+          professor: z.object({
+            id: z.string(),
+            name: z.string(),
+          }),
         })
       ),
+    })
+  ),
+})
+
+export const promptRequestSchema = z.object({
+  sections: z.array(
+    z.object({
+      name: z.string(),
+      id: z.string(),
+      classes: z.array(
+        z.object({
+          id: z.string(),
+          start: z.string(),
+          end: z.string(),
+          day: z.string(),
+          professorId: z.string().nullable(),
+          sectionId: z.string().nullable(),
+        })
+      ),
+    })
+  ),
+  professors: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      subjects: z.array(z.string()),
+      professorSections: z.array(
+        z.object({
+          totalClasses: z.number(),
+          sectionId: z.string(),
+        })
+      ),
+    })
+  ),
+  preferences: z.array(
+    z.object({
+      professorId: z.string().nullable(),
+      sectionId: z.string().nullable(),
+      preference: z.string(),
+      importance: z.enum(["HIGH", "MEDIUM", "LOW"]),
     })
   ),
 })

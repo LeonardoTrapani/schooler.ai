@@ -49,11 +49,11 @@ export function ScheduleDialog(props: ScheduleDialogProps) {
               <b>Scheduled Classes: </b>
               {props.promptResponse?.sections.map((section) => (
                 <div>
-                  <b>SectionID: {section.sectionId}</b>
+                  <b>{section.name}</b>
                   {section.classes.map((classItem) => (
                     <div>
-                      <p>ClassId: {classItem.classId}</p>
-                      <p>ProfessorID: {classItem.professorId}</p>
+                      <p>ClassId: {classItem.id}</p>
+                      <p>Professor: {classItem.professor.name}</p>
                     </div>
                   ))}
                 </div>
