@@ -11,18 +11,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
+import { ScheduleApplyButton } from "./schedule-apply-button"
+
 interface ScheduleDialogProps extends DialogProps {
   promptResponse: PromptResponse | undefined
+  onPromptApply: () => void
+  onOpenChange: (value: boolean) => void
 }
 
 export function ScheduleDialog(props: ScheduleDialogProps) {
   const handleApply = () => {
-    if (!props.onOpenChange) return
-    props.onOpenChange(false)
+    props.onPromptApply()
   }
 
   const handleCancel = () => {
-    if (!props.onOpenChange) return
     props.onOpenChange(false)
   }
 
@@ -32,7 +34,7 @@ export function ScheduleDialog(props: ScheduleDialogProps) {
         <DialogHeader>
           <DialogTitle>Are you sure?</DialogTitle>
           <DialogDescription>
-            <p>This is the AI generated schedule</p>
+            <p>This is the AI calculated schedule</p>
             <p>
               <b>Score: </b>
               {props.promptResponse?.score}/100
@@ -64,9 +66,10 @@ export function ScheduleDialog(props: ScheduleDialogProps) {
           <Button onClick={handleCancel} variant="secondary">
             Undo
           </Button>
-          <Button onClick={handleApply} variant="default">
-            Apply
-          </Button>
+          <ScheduleApplyButton
+            promptResponse={props.promptResponse}
+            onApplyComplete={handleApply}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,5 +1,6 @@
 import {
   ChevronLeft,
+  Forward,
   Loader2,
   LucideProps,
   type Icon as LucideIcon,
@@ -8,6 +9,7 @@ import {
 export type Icon = LucideIcon
 
 export const Icons = {
+  forward: Forward,
   ai: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

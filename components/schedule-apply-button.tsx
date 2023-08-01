@@ -1,29 +1,43 @@
 import React from "react"
+import { useRouter } from "next/navigation"
 
 import { PromptResponse } from "@/types/openai/response.type"
 import { cn } from "@/lib/utils"
-import { promptResponseSchema } from "@/lib/validations/openai"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-interface ScheduleButtonProps extends ButtonProps {
-  onScheduleComplete: (promptResponse: PromptResponse) => void
+interface ScheduleApplyButtonProps extends ButtonProps {
+  onApplyComplete: () => void
+  promptResponse: PromptResponse | undefined
 }
 
-export function ScheduleButton({
+export function ScheduleApplyButton({
   className,
   variant,
-  onScheduleComplete,
+  onApplyComplete,
+  promptResponse,
   ...props
-}: ScheduleButtonProps) {
+}: ScheduleApplyButtonProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   async function onClick() {
     setIsLoading(true)
 
-    const response = await fetch("/api/schedule/calculate", {
+    const formattedPromptResponse: { classId: string; professorId: string }[] =
+      []
+    promptResponse?.sections.forEach((section) =>
+      formattedPromptResponse.push(
+        ...section.classes.map((c) => ({
+          classId: c.classId,
+          professorId: c.professorId,
+        }))
+      )
+    )
+    const response = await fetch("/api/schedule/apply", {
       method: "POST",
+      body: JSON.stringify(formattedPromptResponse),
     })
 
     setIsLoading(false)
@@ -31,14 +45,13 @@ export function ScheduleButton({
     if (!response?.ok) {
       return toast({
         title: "Something went wrong.",
-        description: "Your schedule was not calculated. Please try again.",
+        description: "Your schedule was not applied. Please try again.",
         variant: "destructive",
       })
     }
 
-    const promptResponse = await response.json()
-    const parsedPromptResponse = promptResponseSchema.parse(promptResponse)
-    onScheduleComplete(parsedPromptResponse)
+    onApplyComplete()
+    router.refresh()
   }
 
   return (
@@ -57,9 +70,9 @@ export function ScheduleButton({
       {isLoading ? (
         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
       ) : (
-        <Icons.ai className="mr-2 h-4 w-4" />
+        <Icons.forward className="mr-2 h-4 w-4" />
       )}
-      Generate Schedule
+      Apply
     </button>
   )
 }

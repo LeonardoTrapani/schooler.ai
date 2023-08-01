@@ -97,14 +97,13 @@ export async function POST() {
 
     const messageObject = JSON.parse(message)
     const parsedMessage = promptResponseSchema.parse(messageObject)
-    console.log("The parsed message is", parsedMessage)
 
     return new Response(JSON.stringify(parsedMessage), { status: 200 })
   } catch (error) {
+    console.error(error)
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
     }
-    console.error("The error is", error)
     return new Response("There was an error", { status: 400 })
   }
 }

@@ -15,3 +15,10 @@ export const promptResponseSchema = z.object({
     })
   ),
 })
+
+export const promptApplySchema = z.array(
+  z.object({
+    professorId: z.string(),
+    classId: z.string(),
+  })
+)
