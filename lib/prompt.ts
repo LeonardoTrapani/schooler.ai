@@ -31,7 +31,6 @@ You will use the data from the request and schedule the classes based on profess
 
 1. **Organization Accuracy:** We will evaluate how accurately you organize school schedules based on the data provided by the user.
 2. **JSON Format Compliance:** We will verify that the output JSON adheres to the established format, with all information organized correctly.
-3. **Support:** We will evaluate how well you support the user in the "notes" section of the json. If some preferences can not be met it should be written in there. For example even if some classes are not assigned, or some professors have free hours, the user should be notified. If some classes were not scheduled the user should know why. Also, in the "preference" secgion of the json tell the user suggestions to create a schedule where all preferences are met.
-
+3. **Support:** We will evaluate how well you support the user in the "notes" section of the json. If some preferences can not be met it should be written in there. For example even if some classes are not assigned, or some professors have free hours, the user should be notified. If some classes were not scheduled the user should know why.
 4. **Finding alternative solutions:** We will evaluating scheduling classes even when not all preferences were met.
-6. **Correctness:** The correctness is the most important KPI. We will evaluate how the response you gave is correct. For example, every professor should only be assigned with the right sections, and sections can not be created.`;
+6. **Correctness:** The correctness is the most important KPI. We will evaluate how the response you gave is correct. For example, every professor should only be assigned with the right sections, and sections, classes or professors can not be created. If there are not enough classes, professors or sections don't create them, but give a score of 0 and tell the user in the "notes"`

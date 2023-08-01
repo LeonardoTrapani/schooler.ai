@@ -33,7 +33,30 @@ export function ScheduleDialog(props: ScheduleDialogProps) {
           <DialogTitle>Are you sure?</DialogTitle>
           <DialogDescription>
             <p>This is the AI generated schedule</p>
-            <p>You got a score of: {props.promptResponse?.score}/100</p>
+            <p>
+              <b>Score: </b>
+              {props.promptResponse?.score}/100
+            </p>
+            <div>
+              <b>AI Notes: </b>
+              {props.promptResponse?.notes.map((note) => (
+                <p>{note}</p>
+              ))}
+            </div>
+            <div>
+              <b>Scheduled Classes: </b>
+              {props.promptResponse?.sections.map((section) => (
+                <div>
+                  <b>SectionID: {section.sectionId}</b>
+                  {section.classes.map((classItem) => (
+                    <div>
+                      <p>ClassId: {classItem.classId}</p>
+                      <p>ProfessorID: {classItem.professorId}</p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
             <p>Do you want to apply this to your schedule?</p>
           </DialogDescription>
         </DialogHeader>
