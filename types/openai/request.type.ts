@@ -18,7 +18,7 @@ export type PromptRequest = {
       name: string //the name of the subject
     }[]
     professorSections: {
-      totalClasses: number //number of classes for each section of the professor
+      totalClasses: number //number of classes that the professor has in that section
       sectionId: string
     }[]
   }[]
