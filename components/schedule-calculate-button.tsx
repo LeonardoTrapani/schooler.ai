@@ -28,7 +28,6 @@ export function ScheduleCalculateButton({
 
     setIsLoading(false)
 
-    console.log(response)
     if (!response?.ok) {
       return toast({
         title: "Something went wrong.",

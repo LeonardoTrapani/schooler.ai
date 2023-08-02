@@ -1,8 +1,14 @@
 import {
+  AlertTriangle,
   ChevronLeft,
   Forward,
+  Laptop,
   Loader2,
   LucideProps,
+  Moon,
+  Sun,
+  User,
+  X,
   type Icon as LucideIcon,
 } from "lucide-react"
 
@@ -10,6 +16,12 @@ export type Icon = LucideIcon
 
 export const Icons = {
   forward: Forward,
+  sun: Sun,
+  moon: Moon,
+  laptop: Laptop,
+  close: X,
+  user: User,
+  warning: AlertTriangle,
   ai: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -37,8 +49,8 @@ export const Icons = {
   logo: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="200"
-      height="200"
+      width="24"
+      height="24"
       fill="#000"
       version="1.1"
       viewBox="0 0 504.123 504.123"

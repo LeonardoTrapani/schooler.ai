@@ -19,4 +19,10 @@ export const siteConfig: SiteConfig = {
     "AI",
     "GPT",
   ],
+  author: {
+    name: "Leonardo Trapani",
+    email: "leonard.trapani@gmail.com",
+    github: "https://github.com/leonardotrapani",
+    linkedin: "https://linkedin.com/in/leonardotrapani",
+  },
 }

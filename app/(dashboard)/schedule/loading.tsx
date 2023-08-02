@@ -1,4 +1,4 @@
-export default function DashboardLoading() {
+export default function ScheduleLoading() {
   return (
     <div>
       <h1>Loading...</h1>

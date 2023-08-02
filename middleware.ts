@@ -5,6 +5,14 @@ import { withAuth } from "next-auth/middleware"
 export default withAuth(
   async function middleware(req) {
     const token = await getToken({ req })
+
+    const isMarketingPage =
+      req.nextUrl.pathname === "/" ||
+      req.nextUrl.pathname.startsWith("/pricing")
+    if (isMarketingPage) {
+      return null
+    }
+
     const isAuth = !!token
     const isAuthPage =
       req.nextUrl.pathname.startsWith("/login") ||
@@ -12,7 +20,7 @@ export default withAuth(
 
     if (isAuthPage) {
       if (isAuth) {
-        return NextResponse.redirect(new URL("/dashboard", req.url))
+        return NextResponse.redirect(new URL("/schedule", req.url))
       }
 
       return null
@@ -40,7 +48,3 @@ export default withAuth(
     },
   }
 )
-
-export const config = {
-  matcher: ["/dashboard/:path*", "/editor/:path*", "/login", "/register"],
-}

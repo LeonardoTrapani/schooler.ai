@@ -17,7 +17,7 @@ export const env = createEnv({
     POSTMARK_ACTIVATION_TEMPLATE: z.string().min(1),
     STRIPE_API_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
-    STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1),
+    STRIPE_PRO_YEARLY_PLAN_ID: z.string().min(1),
     OPENAI_API_KEY: z.string().min(1),
   },
   client: {
@@ -36,7 +36,7 @@ export const env = createEnv({
     POSTMARK_ACTIVATION_TEMPLATE: process.env.POSTMARK_ACTIVATION_TEMPLATE,
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-    STRIPE_PRO_MONTHLY_PLAN_ID: process.env.STRIPE_PRO_MONTHLY_PLAN_ID,
+    STRIPE_PRO_YEARLY_PLAN_ID: process.env.STRIPE_PRO_YEARLY_PLAN_ID,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
