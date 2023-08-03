@@ -1,8 +1,8 @@
-import { ScheduleOperations } from "@/components/schedule-operations"
+import { ScheduleOperations } from "@/components/schedule/schedule-operations"
 
 export default async function Schedule() {
   return (
-    <div className="flex h-screen justify-center items-center">
+    <div className="container">
       <ScheduleOperations />
     </div>
   )

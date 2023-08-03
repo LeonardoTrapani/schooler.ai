@@ -1,12 +1,16 @@
 import {
   AlertTriangle,
   ChevronLeft,
+  CircleDot,
   Forward,
   Laptop,
   Loader2,
   LucideProps,
   Moon,
+  MoreVertical,
+  Plus,
   Sun,
+  Trash,
   User,
   X,
   type Icon as LucideIcon,
@@ -15,10 +19,14 @@ import {
 export type Icon = LucideIcon
 
 export const Icons = {
+  add: Plus,
   forward: Forward,
   sun: Sun,
+  ellipsis: MoreVertical,
+  trash: Trash,
   moon: Moon,
   laptop: Laptop,
+  dot: CircleDot,
   close: X,
   user: User,
   warning: AlertTriangle,

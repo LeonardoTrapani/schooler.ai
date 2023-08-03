@@ -3,7 +3,7 @@
 import React from "react"
 
 import { PromptResponse } from "@/types/openai/response.type"
-import { ScheduleDialog } from "@/components/schedule-dialog"
+import { ScheduleDialog } from "@/components/schedule/schedule-dialog"
 
 import { ScheduleCalculateButton } from "./schedule-calculate-button"
 

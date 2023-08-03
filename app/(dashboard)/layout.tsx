@@ -4,7 +4,7 @@ import { dashboardNavConfig } from "@/config/nav"
 import { getCurrentUser } from "@/lib/session"
 import { MainNav } from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
-import { UserAccountNav } from "@/components/user-account-nav"
+import { UserAccountNav } from "@/components/user/user-account-nav"
 
 interface DashboardLayoutProps {
   children?: React.ReactNode
