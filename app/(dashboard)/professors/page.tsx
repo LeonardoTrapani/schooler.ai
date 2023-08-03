@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
-import { ProfessorCreateButton } from "@/components/professor/professor-create-button"
+import { ProfessorCreate } from "@/components/professor/professor-create"
 import { ProfessorItem } from "@/components/professor/professor-item"
 import { DashboardShell } from "@/components/shell"
 
@@ -21,20 +21,31 @@ export default async function Professors() {
     select: {
       id: true,
       name: true,
-      updatedAt: true,
       subjects: {
         select: {
           id: true,
           name: true,
         },
       },
+      professorSections: {
+        select: {
+          section: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      name: "asc",
     },
   })
 
   return (
     <DashboardShell>
       <DashboardHeader heading="Professors" text="Create and manage professors">
-        <ProfessorCreateButton />
+        <ProfessorCreate />
       </DashboardHeader>
       <div>
         {professors?.length ? (
@@ -52,7 +63,11 @@ export default async function Professors() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any professors yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <ProfessorCreateButton variant="outline" />
+            <ProfessorCreate
+              buttonProps={{
+                variant: "outline",
+              }}
+            />
           </EmptyPlaceholder>
         )}
       </div>

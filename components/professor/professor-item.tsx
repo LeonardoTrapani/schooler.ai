@@ -1,38 +1,60 @@
 import Link from "next/link"
-import { Professor, Subject } from "@prisma/client"
+import { Professor, Section, Subject } from "@prisma/client"
 
-import { formatDate } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProfessorOperations } from "@/components/professor/professor-operations"
 
 interface ProfessorItemProps {
-  professor: Pick<Professor, "id" | "name" | "updatedAt"> & {
+  professor: Pick<Professor, "id" | "name"> & {
     subjects: Pick<Subject, "name">[]
+  } & {
+    professorSections: {
+      section: Pick<Section, "name">
+    }[]
   }
 }
 
 export function ProfessorItem({ professor }: ProfessorItemProps) {
+  const hasSubtitle =
+    professor.subjects.length > 0 || professor.professorSections.length > 0
   return (
     <div className="flex items-center justify-between p-4">
-      <div className="grid gap-1">
+      <div
+        className={cn("grid", {
+          "grid-1": hasSubtitle,
+        })}
+      >
         <Link
           href={`/professors/${professor.id}`}
           className="font-semibold hover:underline"
         >
           {professor.name}
         </Link>
-        <div className="text-sm text-muted-foreground flex flex-col sm:flex-row">
-          <p>
-            {professor.subjects.map(
-              (subject, i) =>
-                subject.name + (i === professor.subjects.length - 1 ? "" : ", ")
-            )}
-          </p>
-          <p className="hidden sm:inline-block">
-            {professor.subjects.length > 0 && <span>&nbsp;&bull;&nbsp;</span>}
-          </p>
-          <p>{formatDate(professor.updatedAt?.toDateString())}</p>
-        </div>
+        {hasSubtitle && (
+          <div className="text-sm text-muted-foreground flex flex-col sm:flex-row">
+            <p>
+              {professor.subjects.map(
+                (subject, i) =>
+                  subject.name +
+                  (i === professor.subjects.length - 1 ? "" : ", ")
+              )}
+            </p>
+            <p className="hidden sm:inline-block">
+              {professor.subjects.length > 0 &&
+                professor.professorSections.length > 0 && (
+                  <span>&nbsp;&bull;&nbsp;</span>
+                )}
+            </p>
+            <p className="hidden sm:inline-block">
+              {professor.professorSections.map(
+                (section, i) =>
+                  section.section.name +
+                  (i === professor.professorSections.length - 1 ? "" : ", ")
+              )}
+            </p>
+          </div>
+        )}
       </div>
       <ProfessorOperations professor={{ id: professor.id }} />
     </div>

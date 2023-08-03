@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
-import { SectionCreateButton } from "@/components/section/section-create-button"
+import { SectionCreate } from "@/components/section/section-create"
 import { SectionItem } from "@/components/section/section-item"
 import { DashboardShell } from "@/components/shell"
 
@@ -28,7 +28,7 @@ export default async function Sections() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Sections" text="Create and manage sections">
-        <SectionCreateButton />
+        <SectionCreate />
       </DashboardHeader>
       <div>
         {sections?.length ? (
@@ -44,7 +44,7 @@ export default async function Sections() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any section yet.
             </EmptyPlaceholder.Description>
-            <SectionCreateButton variant="outline" />
+            <SectionCreate buttonProps={{ variant: "outline" }} />
           </EmptyPlaceholder>
         )}
       </div>

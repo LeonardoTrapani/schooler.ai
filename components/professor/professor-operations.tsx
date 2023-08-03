@@ -37,6 +37,7 @@ async function deleteProfessor(professorId: string) {
       variant: "destructive",
     })
   }
+
   return true
 }
 

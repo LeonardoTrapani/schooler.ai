@@ -1,9 +1,9 @@
 import { z } from "zod"
 
 export const patchSectionSchema = z.object({
-  name: z.string().optional(),
+  name: z.string().trim().min(3).optional(),
 })
 
 export const postSectionSchema = z.object({
-  name: z.string(),
+  name: z.string().trim().min(3),
 })

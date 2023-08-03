@@ -26,7 +26,7 @@ import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 async function deleteSection(sectionId: string) {
-  const response = await fetch(`/api/section/${sectionId}`, {
+  const response = await fetch(`/api/sections/${sectionId}`, {
     method: "DELETE",
   })
 

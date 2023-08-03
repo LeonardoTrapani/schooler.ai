@@ -74,10 +74,10 @@ model Class {
   day   Int    @db.SmallInt
 
   sectionId String
-  section   Section @relation(fields: [sectionId], references: [id])
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   professorId String?
-  professor   Professor? @relation(fields: [professorId], references: [id])
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
@@ -100,7 +100,7 @@ model Preference {
   preference String
 
   userId String?
-  User   User?   @relation(fields: [userId], references: [id])
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   professor   Professor? @relation(fields: [professorId], references: [id], onDelete: Cascade)
   professorId String?
