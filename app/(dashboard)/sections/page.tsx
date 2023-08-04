@@ -39,7 +39,7 @@ export default async function Sections() {
           </div>
         ) : (
           <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="logo" />
+            <EmptyPlaceholder.Icon name="empty" />
             <EmptyPlaceholder.Title>No sections created</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
               You don&apos;t have any section yet.

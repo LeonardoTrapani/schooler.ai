@@ -4,7 +4,6 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { DialogProps } from "@radix-ui/react-alert-dialog"
-import { Label } from "@radix-ui/react-label"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -20,6 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Icons } from "@/components/icons"
 
 import { toast } from "../ui/use-toast"
@@ -98,9 +98,7 @@ export function SectionCreate({ buttonProps, ...props }: SectionCreateProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="section">
-              Section Name
-            </Label>
+            <Label htmlFor="section">Section Name</Label>
             <Input
               id="name"
               className="max-w-[400px]"
@@ -112,8 +110,8 @@ export function SectionCreate({ buttonProps, ...props }: SectionCreateProps) {
               <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
             )}
           </div>
-          <DialogFooter className="mt-4">
-            <Button type="submit">
+          <DialogFooter>
+            <Button type="submit" className="mt-2">
               {creating && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}

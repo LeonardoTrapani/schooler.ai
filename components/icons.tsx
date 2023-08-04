@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  Box,
   ChevronLeft,
   CircleDot,
   Forward,
@@ -25,6 +26,7 @@ export const Icons = {
   ellipsis: MoreVertical,
   trash: Trash,
   moon: Moon,
+  empty: Box,
   laptop: Laptop,
   dot: CircleDot,
   close: X,

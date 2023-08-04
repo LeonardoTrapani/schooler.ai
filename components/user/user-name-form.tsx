@@ -89,9 +89,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
         </CardHeader>
         <CardContent>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="name">
-              Name
-            </Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               className="max-w-[400px]"

@@ -56,7 +56,7 @@ export default async function Professors() {
           </div>
         ) : (
           <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="logo" />
+            <EmptyPlaceholder.Icon name="empty" />
             <EmptyPlaceholder.Title>
               No professors created
             </EmptyPlaceholder.Title>
