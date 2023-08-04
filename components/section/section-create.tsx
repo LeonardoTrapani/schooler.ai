@@ -18,11 +18,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
-
-import { toast } from "../ui/use-toast"
 
 interface SectionCreateProps extends DialogProps {
   buttonProps?: ButtonProps
@@ -34,11 +39,8 @@ export function SectionCreate({ buttonProps, ...props }: SectionCreateProps) {
   const router = useRouter()
   const [open, setOpen] = React.useState<boolean>(false)
   const [creating, setCreating] = React.useState<boolean>(false)
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<FormData>({
+
+  const form = useForm<FormData>({
     resolver: zodResolver(postSectionSchema),
   })
 
@@ -96,29 +98,35 @@ export function SectionCreate({ buttonProps, ...props }: SectionCreateProps) {
             Please enter the section name to create a new section.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-1">
-            <Label htmlFor="section">Section Name</Label>
-            <Input
-              id="name"
-              className="max-w-[400px]"
-              placeholder="Section Name"
-              size={32}
-              {...register("name")}
-            />
-            {errors?.name && (
-              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-          <DialogFooter>
-            <Button type="submit" className="mt-2">
-              {creating && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="section">Section Name</FormLabel>
+                  <Input
+                    id="name"
+                    className="max-w-[400px]"
+                    placeholder="Section Name"
+                    size={32}
+                    {...field}
+                  />
+                  <FormMessage />
+                </FormItem>
               )}
-              Create Section
-            </Button>
-          </DialogFooter>
-        </form>
+            />
+            <DialogFooter>
+              <Button type="submit" className="mt-4">
+                {creating && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Create Section
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

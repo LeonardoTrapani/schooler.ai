@@ -18,8 +18,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
@@ -31,11 +37,7 @@ type FormData = z.infer<typeof userNameSchema>
 
 export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   const router = useRouter()
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<FormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(userNameSchema),
     defaultValues: {
       name: user?.name || "",
@@ -74,46 +76,52 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   }
 
   return (
-    <form
-      className={cn(className)}
-      onSubmit={handleSubmit(onSubmit)}
-      {...props}
-    >
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Name</CardTitle>
-          <CardDescription>
-            Please enter your full name or a display name you are comfortable
-            with.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-1">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              className="max-w-[400px]"
-              size={32}
-              {...register("name")}
+    <Form {...form}>
+      <form
+        className={cn(className)}
+        onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Name</CardTitle>
+            <CardDescription>
+              Please enter your full name or a display name you are comfortable
+              with.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name">Name</FormLabel>
+                  <Input
+                    id="name"
+                    className="max-w-[400px]"
+                    size={32}
+                    {...field}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors?.name && (
-              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <button
-            type="submit"
-            className={cn(buttonVariants(), className)}
-            disabled={isSaving}
-          >
-            {isSaving && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            <span>Save</span>
-          </button>
-        </CardFooter>
-      </Card>
-    </form>
+          </CardContent>
+          <CardFooter>
+            <button
+              type="submit"
+              className={cn(buttonVariants(), className)}
+              disabled={isSaving}
+            >
+              {isSaving && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              <span>Save</span>
+            </button>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   )
 }

@@ -18,11 +18,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
-
-import { toast } from "../ui/use-toast"
 
 interface ProfessorCreateProps extends DialogProps {
   buttonProps?: ButtonProps
@@ -37,11 +42,7 @@ export function ProfessorCreate({
   const router = useRouter()
   const [open, setOpen] = React.useState<boolean>(false)
   const [creating, setCreating] = React.useState<boolean>(false)
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<FormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(postProfessorSchema),
   })
 
@@ -81,6 +82,8 @@ export function ProfessorCreate({
       description: `Professor ${data.name} created successfully`,
     })
 
+    form.reset()
+
     router.refresh()
   }
 
@@ -100,29 +103,35 @@ export function ProfessorCreate({
             professor.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-1">
-            <Label htmlFor="professor">Professor Name</Label>
-            <Input
-              id="name"
-              className="max-w-[400px]"
-              placeholder="Professor Name"
-              size={32}
-              {...register("name")}
-            />
-            {errors?.name && (
-              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
-            )}
-          </div>
-          <DialogFooter>
-            <Button type="submit" className="mt-2">
-              {creating && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="professor">Professor Name</FormLabel>
+                  <Input
+                    id="name"
+                    className="max-w-[400px]"
+                    placeholder="Professor Name"
+                    size={32}
+                    {...field}
+                  />
+                  <FormMessage />
+                </FormItem>
               )}
-              Create Professor
-            </Button>
-          </DialogFooter>
-        </form>
+            ></FormField>
+            <DialogFooter>
+              <Button type="submit" className="mt-4">
+                {creating && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Create Professor
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

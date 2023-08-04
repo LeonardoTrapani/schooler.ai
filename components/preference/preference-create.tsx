@@ -92,6 +92,8 @@ export function PreferenceCreate({
       description: `Preference created successfully`,
     })
 
+    form.reset()
+
     router.refresh()
   }
 
