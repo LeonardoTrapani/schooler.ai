@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Section, Subject } from "@prisma/client"
+import { Section } from "@prisma/client"
 
 import { formatDate } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -14,7 +14,7 @@ export function SectionItem({ section }: SectionItemProps) {
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <Link
-          href={`/professors/${section.id}`}
+          href={`/sections/${section.id}`}
           className="font-semibold hover:underline"
         >
           {section.name}
