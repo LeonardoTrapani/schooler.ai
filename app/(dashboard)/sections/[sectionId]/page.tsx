@@ -88,7 +88,9 @@ export default async function SectionPage({ params }: SectionPageProps) {
 
   return (
     <DashboardInnerPage>
-      <DashboardInnerPage.Title>{section.name}</DashboardInnerPage.Title>
+      <DashboardInnerPage.Title closeHref="/sections">
+        {section.name}
+      </DashboardInnerPage.Title>
       <DashboardInnerPage.Body>
         <DashboardInnerPage.Section>
           <DashboardInnerPage.SectionHeader
