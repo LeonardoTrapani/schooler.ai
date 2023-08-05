@@ -45,7 +45,7 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-type ProfessorCreateProps = DialogProps & {
+type ProfessorSectionCreateProps = DialogProps & {
   buttonProps?: ButtonProps
 } & (
     | {
@@ -79,7 +79,7 @@ type ProfessorCreateProps = DialogProps & {
 
 type FormData = z.infer<typeof postProfessorSectionsSchema>
 
-export function SectionAddProfessor({
+export function ProfessorSectionCreate({
   buttonProps,
   from,
   sections,
@@ -87,7 +87,7 @@ export function SectionAddProfessor({
   professors,
   professorId,
   ...props
-}: ProfessorCreateProps) {
+}: ProfessorSectionCreateProps) {
   const router = useRouter()
   const [open, setOpen] = React.useState<boolean>(false)
   const [adding, setAdding] = React.useState<boolean>(false)

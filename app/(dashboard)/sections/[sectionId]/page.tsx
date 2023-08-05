@@ -7,9 +7,9 @@ import { getCurrentUser } from "@/lib/session"
 import { DashboardInnerPage } from "@/components/dashboard-inner-page"
 import { PreferenceCreate } from "@/components/preference/preference-create"
 import { PreferencesView } from "@/components/preference/preferences-view"
+import { ProfessorSectionCreate } from "@/components/professor-sections/professor-section-create"
 import { ScheduleView } from "@/components/schedule/schedule-view"
 import { ProfessorsInSectionView } from "@/components/section/professors-in-section-view"
-import { SectionAddProfessor } from "@/components/section/section-add-professor"
 
 async function getSectionForUser(postId: Section["id"], userId: User["id"]) {
   return await db.section.findUnique({
@@ -126,7 +126,7 @@ export default async function SectionPage({ params }: SectionPageProps) {
             title="Professors"
             subtitle="All the professors that teach in this class"
           >
-            <SectionAddProfessor
+            <ProfessorSectionCreate
               from="section"
               sectionId={section.id}
               professors={professors}

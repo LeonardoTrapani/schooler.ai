@@ -1,6 +1,6 @@
 import { DashboardInnerPage } from "@/components/dashboard-inner-page"
 import { PreferenceCreate } from "@/components/preference/preference-create"
-import { SectionAddProfessor } from "@/components/section/section-add-professor"
+import { ProfessorSectionCreate } from "@/components/professor-sections/professor-section-create"
 
 export default function Loading() {
   return (
@@ -13,7 +13,7 @@ export default function Loading() {
         title="Professors"
         subtitle="All the professors that teach in this class"
       >
-        <SectionAddProfessor />
+        <ProfessorSectionCreate />
       </DashboardInnerPage.SectionSkeleton>
       <DashboardInnerPage.SectionSkeleton
         title="Preferences"

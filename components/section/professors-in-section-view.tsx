@@ -1,8 +1,7 @@
 import { Professor, ProfessorSection } from "@prisma/client"
 
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-
-import { SectionAddProfessor } from "./section-add-professor"
+import { ProfessorSectionCreate } from "@/components/professor-sections/professor-section-create"
 
 interface ProfessorsInSectionViewProps {
   sectionId: string
@@ -26,7 +25,7 @@ export function ProfessorsInSectionView({
           <EmptyPlaceholder.Description>
             No professors teach in this section yet.
           </EmptyPlaceholder.Description>
-          <SectionAddProfessor
+          <ProfessorSectionCreate
             buttonProps={{
               variant: "outline",
             }}

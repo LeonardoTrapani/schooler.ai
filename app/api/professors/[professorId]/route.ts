@@ -2,6 +2,7 @@ import * as z from "zod"
 
 import { verifyCurrentUserHasAccessToProfessor } from "@/lib/current-user-has-access"
 import { db } from "@/lib/db"
+import { getCurrentUser } from "@/lib/session"
 import { patchProfessorSchema } from "@/lib/validations/professor"
 
 const routeContextSchema = z.object({
@@ -18,8 +19,18 @@ export async function DELETE(
     // Validate the route params.
     const { params } = routeContextSchema.parse(context)
 
+    const user = await getCurrentUser()
+    if (!user) {
+      return new Response(null, { status: 401 })
+    }
+
     // Check if the user has access to this professor.
-    if (!(await verifyCurrentUserHasAccessToProfessor(params.professorId))) {
+    if (
+      !(await verifyCurrentUserHasAccessToProfessor(
+        user.id,
+        params.professorId
+      ))
+    ) {
       return new Response(null, { status: 403 })
     }
 
@@ -49,8 +60,18 @@ export async function PATCH(
     // Validate route params.
     const { params } = routeContextSchema.parse(context)
 
+    const user = await getCurrentUser()
+    if (!user) {
+      return new Response(null, { status: 401 })
+    }
+
     // Check if the user has access to this professor.
-    if (!(await verifyCurrentUserHasAccessToProfessor(params.professorId))) {
+    if (
+      !(await verifyCurrentUserHasAccessToProfessor(
+        user.id,
+        params.professorId
+      ))
+    ) {
       return new Response(null, { status: 403 })
     }
 
