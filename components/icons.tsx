@@ -1,7 +1,9 @@
 import {
   AlertTriangle,
   Box,
+  Check,
   ChevronLeft,
+  ChevronsUpDown,
   CircleDot,
   Forward,
   Laptop,
@@ -32,6 +34,8 @@ export const Icons = {
   close: X,
   user: User,
   warning: AlertTriangle,
+  open: ChevronsUpDown,
+  check: Check,
   ai: ({ ...props }: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

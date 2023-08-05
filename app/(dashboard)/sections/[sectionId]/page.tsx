@@ -7,11 +7,11 @@ import { getCurrentUser } from "@/lib/session"
 import { DashboardInnerPage } from "@/components/dashboard-inner-page"
 import { PreferenceCreate } from "@/components/preference/preference-create"
 import { PreferencesView } from "@/components/preference/preferences-view"
-import { ProfessorCreate } from "@/components/professor/professor-create"
 import { ScheduleView } from "@/components/schedule/schedule-view"
 import { ProfessorsInSectionView } from "@/components/section/professors-in-section-view"
+import { SectionAddProfessor } from "@/components/section/section-add-professor"
 
-async function getPostForUser(postId: Section["id"], userId: User["id"]) {
+async function getSectionForUser(postId: Section["id"], userId: User["id"]) {
   return await db.section.findUnique({
     where: {
       id: postId,
@@ -69,6 +69,18 @@ async function getPostForUser(postId: Section["id"], userId: User["id"]) {
   })
 }
 
+async function getProfessorsForUser(userId: User["id"]) {
+  return await db.professor.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
+}
+
 interface SectionPageProps {
   params: { sectionId: string }
 }
@@ -80,7 +92,13 @@ export default async function SectionPage({ params }: SectionPageProps) {
     redirect(authOptions?.pages?.signIn || "/login")
   }
 
-  const section = await getPostForUser(params.sectionId, user.id)
+  const professorsPromise = getProfessorsForUser(user.id)
+  const sectionPromise = getSectionForUser(params.sectionId, user.id)
+
+  const [professors, section] = await Promise.all([
+    professorsPromise,
+    sectionPromise,
+  ])
 
   if (!section) {
     notFound()
@@ -108,10 +126,16 @@ export default async function SectionPage({ params }: SectionPageProps) {
             title="Professors"
             subtitle="All the professors that teach in this class"
           >
-            <ProfessorCreate />
+            <SectionAddProfessor
+              from="section"
+              sectionId={section.id}
+              professors={professors}
+            />
           </DashboardInnerPage.SectionHeader>
           <ProfessorsInSectionView
+            professors={professors}
             professorSection={section.professorSections}
+            sectionId={section.id}
           />
         </DashboardInnerPage.Section>
         <DashboardInnerPage.Section>

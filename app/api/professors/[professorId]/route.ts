@@ -1,7 +1,6 @@
-import { getServerSession } from "next-auth"
 import * as z from "zod"
 
-import { authOptions } from "@/lib/auth"
+import { verifyCurrentUserHasAccessToProfessor } from "@/lib/current-user-has-access"
 import { db } from "@/lib/db"
 import { patchProfessorSchema } from "@/lib/validations/professor"
 
@@ -77,16 +76,4 @@ export async function PATCH(
 
     return new Response(null, { status: 500 })
   }
-}
-
-async function verifyCurrentUserHasAccessToProfessor(professorId: string) {
-  const session = await getServerSession(authOptions)
-  const count = await db.professor.count({
-    where: {
-      id: professorId,
-      userId: session?.user.id,
-    },
-  })
-
-  return count > 0
 }
