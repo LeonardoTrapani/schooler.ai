@@ -128,7 +128,7 @@ export function PreferenceCreate({
                       props.from === "professor"
                         ? "He can not teach after 10:00 AM"
                         : props.from === "section"
-                        ? "Professors can teach maximum 2 classes in a row"
+                        ? "Professors in this section can teach maximum 2 classes in a row"
                         : "Professors can teach maximum 3 classes in a row"
                     }
                     size={32}

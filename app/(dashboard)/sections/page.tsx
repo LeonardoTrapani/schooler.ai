@@ -23,6 +23,9 @@ export default async function Sections() {
       name: true,
       updatedAt: true,
     },
+    orderBy: {
+      name: "asc",
+    },
   })
 
   return (

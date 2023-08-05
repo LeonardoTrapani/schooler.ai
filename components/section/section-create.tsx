@@ -76,11 +76,17 @@ export function SectionCreate({ buttonProps, ...props }: SectionCreateProps) {
 
     setOpen(false)
 
+    const jsonData = await response.json()
+
     toast({
-      description: `Section ${data.name} created successfully`,
+      description: `Section ${jsonData.name} created successfully`,
     })
 
+    form.reset()
+
     router.refresh()
+
+    router.push(`/sections/${jsonData.id}`)
   }
 
   return (

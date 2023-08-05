@@ -78,13 +78,17 @@ export function ProfessorCreate({
 
     setOpen(false)
 
+    const jsonData = await response.json()
+
     toast({
-      description: `Professor ${data.name} created successfully`,
+      description: `Professor ${jsonData.name} created successfully`,
     })
 
     form.reset()
 
     router.refresh()
+
+    router.push(`/professors/${jsonData.id}`)
   }
 
   return (
