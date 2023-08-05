@@ -14,12 +14,12 @@ export type PromptRequest = {
   professors: {
     id: string //professorId
     name: string //the name of the professor. Use this in the notes instead of the professor ID
-    subjects: {
-      name: string //the name of the subject
-    }[]
     professorSections: {
-      totalClasses: number //number of classes that the professor has in that section
+      totalClasses: number //number of classes that the professor has in that section with that subject
       sectionId: string
+      subject: {
+        name: string //The name of the subject that that professor will teach in those classes in that section
+      }[]
     }[]
   }[]
   preferences: {

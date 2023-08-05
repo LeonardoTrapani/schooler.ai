@@ -14,6 +14,10 @@ export const promptResponseSchema = z.object({
             id: z.string(),
             name: z.string(),
           }),
+          subject: z.object({
+            name: z.string(),
+            id: z.string(),
+          }),
         })
       ),
     })
@@ -41,11 +45,14 @@ export const promptRequestSchema = z.object({
     z.object({
       id: z.string(),
       name: z.string(),
-      subjects: z.array(z.string()),
       professorSections: z.array(
         z.object({
           totalClasses: z.number(),
           sectionId: z.string(),
+          subject: z.object({
+            name: z.string(),
+            id: z.string(),
+          }),
         })
       ),
     })
