@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Professor, Section } from "@prisma/client"
+import { Professor, Section, Subject } from "@prisma/client"
 import { DialogProps } from "@radix-ui/react-alert-dialog"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -50,30 +50,35 @@ type ProfessorSectionCreateProps = DialogProps & {
 } & (
     | {
         from: "section"
-
-        professors: Pick<Professor, "id" | "name">[]
-        professorId?: string
-
-        sections?: Pick<Section, "id" | "name">[]
         sectionId: string
+        professors: (Pick<Professor, "id" | "name"> & {
+          subjects: Pick<Subject, "id" | "name">[]
+        })[]
+
+        professor?: undefined
+        sections?: undefined
       }
     | {
         from: "professor"
-
-        professors?: Pick<Professor, "id" | "name">[]
-        professorId: string
-
+        professor: Pick<Professor, "id" | "name"> & {
+          subjects: Pick<Subject, "id" | "name">[]
+        }
         sections: Pick<Section, "id" | "name">[]
-        sectionId?: string
+
+        professors?: undefined
+        sectionId?: undefined
       }
     | {
         from?: undefined
 
-        professors?: Pick<Professor, "id" | "name">[]
-        professorId?: string
-
+        professor?: Pick<Professor, "id" | "name"> & {
+          subjects: Pick<Subject, "id" | "name">[]
+        }
         sections?: Pick<Section, "id" | "name">[]
         sectionId?: string
+        professors?: (Pick<Professor, "id" | "name"> & {
+          subjects: Pick<Subject, "id" | "name">[]
+        })[]
       }
   )
 
@@ -85,7 +90,7 @@ export function ProfessorSectionCreate({
   sections,
   sectionId,
   professors,
-  professorId,
+  professor,
   ...props
 }: ProfessorSectionCreateProps) {
   const router = useRouter()
@@ -95,7 +100,7 @@ export function ProfessorSectionCreate({
     resolver: zodResolver(postProfessorSectionsSchema),
     defaultValues: {
       sectionId,
-      professorId,
+      professorId: professor?.id,
     },
   })
 
@@ -119,7 +124,7 @@ export function ProfessorSectionCreate({
         return toast({
           title: "Something went wrong.",
           description:
-            "The professor was already added to this section. Consider editing the professor instead.",
+            "The professor with this subject was already added to this section. Consider editing the professor instead, or adding him again with some other subject.",
           variant: "destructive",
         })
       }
@@ -157,6 +162,28 @@ export function ProfessorSectionCreate({
         value: section.id,
       })),
     [sections]
+  )
+
+  const professorId = form.watch("professorId")
+
+  const subjects = React.useMemo(() => {
+    if (from === "professor") {
+      return professor.subjects
+    }
+    if (from === "section") {
+      return professors.find((professor) => professor.id === professorId)
+        ?.subjects
+    }
+    return []
+  }, [from, professor?.subjects, professorId, professors])
+
+  const formattedSubjects = React.useMemo(
+    () =>
+      subjects?.map((subject) => ({
+        label: subject.name,
+        value: subject.id,
+      })),
+    [subjects]
   )
 
   return (
@@ -297,6 +324,78 @@ export function ProfessorSectionCreate({
                 )}
               />
             )}
+            {
+              <FormField
+                control={form.control}
+                name="subjectId"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel
+                      className={cn(
+                        !formattedSubjects?.length && "text-muted-foreground"
+                      )}
+                    >
+                      Subject
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger
+                        asChild
+                        disabled={!formattedSubjects?.length}
+                      >
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            disabled={!formattedSubjects?.length}
+                            role="combobox"
+                            className={cn(
+                              "justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? formattedSubjects?.find(
+                                  (subject) => subject.value === field.value
+                                )?.label
+                              : "Select a subject..."}
+                            <Icons.open className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="p-0">
+                        <Command>
+                          <CommandInput placeholder="Search subject..." />
+                          <CommandEmpty>
+                            No subject found for this professor.
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {formattedSubjects?.map((subject) => (
+                              <CommandItem
+                                value={subject.label}
+                                key={subject.value}
+                                onSelect={() => {
+                                  form.setValue("subjectId", subject.value)
+                                }}
+                              >
+                                <Icons.check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    subject.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {subject.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            }
             <FormField
               control={form.control}
               name="totalClasses"
@@ -312,7 +411,8 @@ export function ProfessorSectionCreate({
                     {...field}
                   />
                   <FormDescription>
-                    The total classes the professor will teach in this class.
+                    The total classes the professor will teach in this class
+                    with the selected subject.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

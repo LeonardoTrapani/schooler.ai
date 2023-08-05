@@ -1,11 +1,13 @@
-import { Professor, ProfessorSection } from "@prisma/client"
+import { Professor, ProfessorSection, Subject } from "@prisma/client"
 
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { ProfessorSectionCreate } from "@/components/professor-sections/professor-section-create"
 
 interface ProfessorsInSectionViewProps {
   sectionId: string
-  professors: Pick<Professor, "id" | "name">[]
+  professors: (Pick<Professor, "id" | "name"> & {
+    subjects: Pick<Subject, "id" | "name">[]
+  })[]
   professorSection: (Pick<ProfessorSection, "id" | "totalClasses"> & {
     professor: Pick<Professor, "name" | "id">
   })[]

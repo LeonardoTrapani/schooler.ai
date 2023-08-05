@@ -11,7 +11,7 @@ export default function Loading() {
       ></DashboardInnerPage.SectionSkeleton>
       <DashboardInnerPage.SectionSkeleton
         title="Professors"
-        subtitle="All the professors that teach in this class"
+        subtitle="All the professors assigned for this section, with the amout of classes they have for each subject"
       >
         <ProfessorSectionCreate />
       </DashboardInnerPage.SectionSkeleton>

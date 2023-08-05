@@ -27,3 +27,24 @@ export async function verifyCurrentUserHasAccessToSection(
 
   return count > 0
 }
+
+export async function verifyCurrentUserHasAccessToProfessorWithSubject(
+  userId: string,
+  professorId: string,
+  subjectId: string
+) {
+  const count = await db.professor.count({
+    where: {
+      id: professorId,
+      userId,
+      subjects: {
+        some: {
+          id: subjectId,
+        },
+      },
+    },
+  })
+
+  console.log({ count, professorId, subjectId })
+  return count > 0
+}

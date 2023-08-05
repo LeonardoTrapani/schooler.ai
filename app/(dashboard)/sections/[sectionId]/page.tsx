@@ -77,6 +77,12 @@ async function getProfessorsForUser(userId: User["id"]) {
     select: {
       id: true,
       name: true,
+      subjects: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
     },
   })
 }
@@ -124,7 +130,7 @@ export default async function SectionPage({ params }: SectionPageProps) {
         <DashboardInnerPage.Section>
           <DashboardInnerPage.SectionHeader
             title="Professors"
-            subtitle="All the professors that teach in this class"
+            subtitle="All the professors assigned for this section, with the amout of classes they have for each subject"
           >
             <ProfessorSectionCreate
               from="section"

@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 import {
-  verifyCurrentUserHasAccessToProfessor,
+  verifyCurrentUserHasAccessToProfessorWithSubject,
   verifyCurrentUserHasAccessToSection,
 } from "@/lib/current-user-has-access"
 import { db } from "@/lib/db"
@@ -19,15 +19,17 @@ export async function POST(req: Request) {
     const body = await req.json()
     const parsedBody = postProfessorSectionsSchema.parse(body)
 
-    const hasAccessToProfessor = await verifyCurrentUserHasAccessToProfessor(
-      user.id,
-      parsedBody.professorId
-    )
+    const hasAccessToProfessorWithSubject =
+      await verifyCurrentUserHasAccessToProfessorWithSubject(
+        user.id,
+        parsedBody.professorId,
+        parsedBody.subjectId
+      )
     const hasAccessToSection = await verifyCurrentUserHasAccessToSection(
       user.id,
       parsedBody.sectionId
     )
-    if (!hasAccessToProfessor || !hasAccessToSection) {
+    if (!hasAccessToProfessorWithSubject || !hasAccessToSection) {
       return new Response(null, { status: 403 })
     }
 
@@ -35,6 +37,7 @@ export async function POST(req: Request) {
       where: {
         professorId: parsedBody.professorId,
         sectionId: parsedBody.sectionId,
+        subjectId: parsedBody.subjectId,
       },
     })
 
@@ -49,6 +52,7 @@ export async function POST(req: Request) {
         professorId: parsedBody.professorId,
         sectionId: parsedBody.sectionId,
         totalClasses: parsedBody.totalClasses,
+        subjectId: parsedBody.subjectId,
       },
     })
 

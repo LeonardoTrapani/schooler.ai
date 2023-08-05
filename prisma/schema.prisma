@@ -46,8 +46,9 @@ model Subject {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  professors Professor[]
-  classes    Class[]
+  professors       Professor[]
+  classes          Class[]
+  professorSection ProfessorSection[]
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
@@ -95,8 +96,13 @@ model ProfessorSection {
   professor    Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
   section      Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@unique([sectionId, professorId, subjectId])
 }
 
 model Preference {
