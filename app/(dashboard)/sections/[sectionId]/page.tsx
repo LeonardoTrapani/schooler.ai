@@ -8,6 +8,7 @@ import { DashboardInnerPage } from "@/components/dashboard-inner-page"
 import { PreferenceCreate } from "@/components/preference/preference-create"
 import { PreferencesView } from "@/components/preference/preferences-view"
 import { ProfessorSectionCreate } from "@/components/professor-sections/professor-section-create"
+import { ScheduleCreate } from "@/components/schedule/schedule-create"
 import { ScheduleView } from "@/components/schedule/schedule-view"
 import { ProfessorsInSectionView } from "@/components/section/professors-in-section-view"
 
@@ -121,11 +122,12 @@ export default async function SectionPage({ params }: SectionPageProps) {
             title="Schedule"
             subtitle="All the classes, professors and subjects scheduled for this section"
           >
-            {
-              //TODO: Schedule Create Button
-            }
+            <ScheduleCreate section={{ id: section.id, name: section.name }} />
           </DashboardInnerPage.SectionHeader>
-          <ScheduleView classes={section.classes} />
+          <ScheduleView
+            classes={section.classes}
+            section={{ id: section.id, name: section.name }}
+          />
         </DashboardInnerPage.Section>
         <DashboardInnerPage.Section>
           <DashboardInnerPage.SectionHeader

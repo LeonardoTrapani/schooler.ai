@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronsUpDown,
   CircleDot,
+  Edit2,
   Forward,
   Laptop,
   Loader2,
@@ -35,6 +36,7 @@ export const Icons = {
   user: User,
   warning: AlertTriangle,
   open: ChevronsUpDown,
+  edit: Edit2,
   check: Check,
   ai: ({ ...props }: LucideProps) => (
     <svg
