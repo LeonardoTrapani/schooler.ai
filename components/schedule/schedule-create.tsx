@@ -426,7 +426,7 @@ function ScheduleDay({
             <ul className="flex flex-col">
               {classes.map((classData, j) => (
                 <li key={j} className="flex items-center gap-2">
-                  <p className="text-slate-300">
+                  <p>
                     {classData.start} - {classData.end}
                   </p>
                   <div className="flex items-center gap-1">
