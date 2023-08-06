@@ -75,9 +75,7 @@ export function ScheduleCreate({
   const [open, setOpen] = React.useState<boolean>(false)
   const [creating, setCreating] = React.useState<boolean>(false)
 
-  const [scheduleDays, setScheduleDays] = React.useState<ScheduleDays>(
-    getDaysFromClasses(currentClasses, section.id)
-  )
+  const [scheduleDays, setScheduleDays] = React.useState<ScheduleDays>([[]])
 
   React.useEffect(() => {
     setScheduleDays(getDaysFromClasses(currentClasses, section.id))
@@ -155,9 +153,6 @@ export function ScheduleCreate({
     }
 
     setOpen(false)
-
-    const data = await response.json()
-    setScheduleDays(getDaysFromClasses(data, section.id))
 
     toast({
       description: `Schedule created successfully`,
