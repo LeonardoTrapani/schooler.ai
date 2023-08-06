@@ -3,12 +3,14 @@ import path from "path"
 import { getServerSession } from "next-auth/next"
 import { z } from "zod"
 
-import { PromptRequest } from "@/types/openai/request.type"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { openai } from "@/lib/openai"
 import { getPrompt } from "@/lib/prompt"
-import { promptResponseSchema } from "@/lib/validations/openai"
+import {
+  promptRequestSchema,
+  promptResponseSchema,
+} from "@/lib/validations/openai"
 
 export const revalidate = 0
 
@@ -29,7 +31,7 @@ export async function POST() {
       openaidirectory + "/response.type.ts",
       "utf8"
     )
-    const promptRequest: PromptRequest | null = await db.user.findUnique({
+    const promptRequest = await db.user.findUnique({
       where: {
         id: session.user.id,
       },
@@ -78,10 +80,11 @@ export async function POST() {
         },
       },
     })
-
     if (!promptRequest) {
       return new Response("Could not access the information", { status: 400 })
     }
+
+    const validatedPromptRequest = promptRequestSchema.parse(promptRequest)
 
     const response = await openai.createChatCompletion({
       model: "gpt-4-0613",
@@ -92,7 +95,7 @@ export async function POST() {
         },
         {
           role: "user",
-          content: JSON.stringify(promptRequest),
+          content: JSON.stringify(validatedPromptRequest),
         },
       ],
       temperature: 0,

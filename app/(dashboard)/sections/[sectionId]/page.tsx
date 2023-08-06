@@ -29,13 +29,16 @@ async function getSectionForUser(postId: Section["id"], userId: User["id"]) {
           id: true,
           day: true,
           updatedAt: true,
+          professorId: true,
           professor: {
             select: {
+              id: true,
               name: true,
             },
           },
           subject: {
             select: {
+              id: true,
               name: true,
             },
           },
@@ -122,7 +125,10 @@ export default async function SectionPage({ params }: SectionPageProps) {
             title="Schedule"
             subtitle="All the classes, professors and subjects scheduled for this section"
           >
-            <ScheduleCreate section={{ id: section.id, name: section.name }} />
+            <ScheduleCreate
+              section={{ id: section.id, name: section.name }}
+              currentClasses={section.classes}
+            />
           </DashboardInnerPage.SectionHeader>
           <ScheduleView
             classes={section.classes}

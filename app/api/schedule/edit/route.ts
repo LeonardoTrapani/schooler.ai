@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { postScheduleSchema } from "@/lib/validations/schedule"
 
-export async function POST(req: Request) {
+export async function PATCH(req: Request) {
   try {
     const user = await getCurrentUser()
 
@@ -18,29 +18,26 @@ export async function POST(req: Request) {
 
     const userHasAccessToSections = verifyCurrentUserHasAccessToSections(
       user.id,
-      parsedBody.map((item) => item.sectionId)
+      parsedBody.classes.map((item) => item.sectionId)
     )
 
     if (!userHasAccessToSections) {
       return new Response(null, { status: 403 })
     }
 
-    await db.class.deleteMany({
+    const deleted = await db.class.deleteMany({
       where: {
-        sectionId: {
-          in: parsedBody.map((item) => item.sectionId),
-        },
-        AND: {
-          section: {
-            userId: user.id,
-          },
-        },
+        sectionId: parsedBody.sectionId,
       },
     })
 
-    const classes = await db.class.createMany({
-      data: parsedBody,
-    })
+    const classes = await db.$transaction([
+      db.class.createMany({
+        data: parsedBody.classes,
+      }),
+    ])
+
+    console.log(deleted, classes, "DELETED")
 
     return new Response(JSON.stringify(classes), { status: 201 })
   } catch (error) {

@@ -3,6 +3,7 @@ import {
   Box,
   Check,
   ChevronLeft,
+  ChevronsDownUp,
   ChevronsUpDown,
   CircleDot,
   Edit2,
@@ -36,6 +37,7 @@ export const Icons = {
   user: User,
   warning: AlertTriangle,
   open: ChevronsUpDown,
+  collapse: ChevronsDownUp,
   edit: Edit2,
   check: Check,
   ai: ({ ...props }: LucideProps) => (

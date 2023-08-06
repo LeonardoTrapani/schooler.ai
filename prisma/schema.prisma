@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -79,10 +82,10 @@ model Class {
   section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   professorId String?
-  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: SetNull)
 
   subjectId String?
-  subject   Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subject   Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
@@ -109,13 +112,13 @@ model Preference {
   id         String @id @default(cuid())
   preference String
 
-  userId String?
-  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: Cascade)
+  professor   Professor? @relation(fields: [professorId], references: [id], onDelete: SetNull)
   professorId String?
 
-  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  section   Section? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
   sectionId String?
 
   importance Importance
@@ -129,9 +132,6 @@ enum Importance {
   MEDIUM
   LOW
 }
-
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"

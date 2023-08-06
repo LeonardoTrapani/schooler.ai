@@ -25,6 +25,7 @@ export function ScheduleView({ classes, section }: ScheduleViewProps) {
             buttonProps={{
               variant: "outline",
             }}
+            currentClasses={[]}
             section={section}
           />
         </EmptyPlaceholder>

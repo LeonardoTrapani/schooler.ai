@@ -19,6 +19,7 @@ export type PromptRequest = {
       sectionId: string
       subject: {
         name: string //The name of the subject that that professor will teach in those classes in that section
+        id: string //subjectId
       }[]
     }[]
   }[]
