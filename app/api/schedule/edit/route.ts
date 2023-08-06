@@ -25,21 +25,18 @@ export async function PATCH(req: Request) {
       return new Response(null, { status: 403 })
     }
 
-    const deleted = await db.class.deleteMany({
-      where: {
-        sectionId: parsedBody.sectionId,
-      },
-    })
-
-    const classes = await db.$transaction([
+    const transaction = await db.$transaction([
+      db.class.deleteMany({
+        where: {
+          sectionId: parsedBody.sectionId,
+        },
+      }),
       db.class.createMany({
         data: parsedBody.classes,
       }),
     ])
 
-    console.log(deleted, classes, "DELETED")
-
-    return new Response(JSON.stringify(classes), { status: 201 })
+    return new Response(JSON.stringify(transaction[1]), { status: 201 })
   } catch (error) {
     console.error(error)
     if (error instanceof z.ZodError) {
