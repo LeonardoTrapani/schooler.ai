@@ -22,7 +22,10 @@ export async function POST(req: Request) {
       const updatePromises = classes.map((classItem) =>
         prisma.class.update({
           where: { id: classItem.classId },
-          data: { professorId: classItem.professorId },
+          data: {
+            professorId: classItem.professorId,
+            subjectId: classItem.subjectId,
+          },
         })
       )
 

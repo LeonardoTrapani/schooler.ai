@@ -34,7 +34,7 @@ export const promptRequestSchema = z.object({
           id: z.string(),
           start: z.string(),
           end: z.string(),
-          day: z.string(),
+          day: z.number(),
           professorId: z.string().nullable(),
           sectionId: z.string().nullable(),
         })
@@ -70,6 +70,7 @@ export const promptRequestSchema = z.object({
 export const promptApplySchema = z.array(
   z.object({
     professorId: z.string(),
+    subjectId: z.string(),
     classId: z.string(),
   })
 )

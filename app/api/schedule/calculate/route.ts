@@ -31,6 +31,7 @@ export async function POST() {
       openaidirectory + "/response.type.ts",
       "utf8"
     )
+
     const promptRequest = await db.user.findUnique({
       where: {
         id: session.user.id,
@@ -80,6 +81,7 @@ export async function POST() {
         },
       },
     })
+
     if (!promptRequest) {
       return new Response("Could not access the information", { status: 400 })
     }

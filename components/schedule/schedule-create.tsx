@@ -246,15 +246,28 @@ export function ScheduleCreate({
     <Dialog {...props} open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={buttonProps?.variant} {...buttonProps}>
-          <Icons.add className="mr-2 h-4 w-4" />
-          New Schedule
+          {currentClasses.length > 0 ? (
+            <>
+              <Icons.edit className="mr-2 h-4 w-4" />
+              Edit Schedule
+            </>
+          ) : (
+            <>
+              <Icons.add className="mr-2 h-4 w-4" />
+              New Schedule
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg overflow-scroll">
         <DialogHeader>
-          <DialogTitle>Create Schedule</DialogTitle>
+          <DialogTitle>
+            {currentClasses.length > 0 ? "Edit" : "Create"} Schedule
+          </DialogTitle>
           <DialogDescription>
-            Create multiple days and add classes to them.
+            {currentClasses.length > 0
+              ? "Edit the current schedule."
+              : "Create multiple days and add classes to them."}
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-[23vh] overflow-scroll">

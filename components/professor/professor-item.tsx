@@ -18,6 +18,14 @@ interface ProfessorItemProps {
 export function ProfessorItem({ professor }: ProfessorItemProps) {
   const hasSubtitle =
     professor.subjects.length > 0 || professor.professorSections.length > 0
+
+  const uniqueSections = Array.from(
+    new Set(professor.professorSections.map((section) => section.section.name))
+  )
+  const formattedSections = uniqueSections.map(
+    (item, i) => item + (i === uniqueSections.length - 1 ? "" : ", ")
+  )
+
   return (
     <div className="flex items-center justify-between p-4">
       <div
@@ -46,13 +54,7 @@ export function ProfessorItem({ professor }: ProfessorItemProps) {
                   <span>&nbsp;&bull;&nbsp;</span>
                 )}
             </p>
-            <p className="hidden sm:inline-block">
-              {professor.professorSections.map(
-                (section, i) =>
-                  section.section.name +
-                  (i === professor.professorSections.length - 1 ? "" : ", ")
-              )}
-            </p>
+            <p className="hidden sm:inline-block">{formattedSections}</p>
           </div>
         )}
       </div>

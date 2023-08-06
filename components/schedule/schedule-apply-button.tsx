@@ -25,16 +25,21 @@ export function ScheduleApplyButton({
   async function onClick() {
     setIsLoading(true)
 
-    const formattedPromptResponse: { classId: string; professorId: string }[] =
-      []
+    const formattedPromptResponse: {
+      classId: string
+      professorId: string
+      subjectId: string
+    }[] = []
     promptResponse?.sections.forEach((section) =>
       formattedPromptResponse.push(
         ...section.classes.map((c) => ({
           classId: c.id,
           professorId: c.professor.id,
+          subjectId: c.subject.id,
         }))
       )
     )
+
     const response = await fetch("/api/schedule/apply", {
       method: "POST",
       body: JSON.stringify(formattedPromptResponse),
