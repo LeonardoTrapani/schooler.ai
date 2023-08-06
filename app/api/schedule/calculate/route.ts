@@ -38,15 +38,16 @@ export async function POST() {
           select: {
             id: true,
             name: true,
-            subjects: {
-              select: {
-                name: true,
-              },
-            },
             professorSections: {
               select: {
                 totalClasses: true,
                 sectionId: true,
+                subject: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
               },
             },
           },
