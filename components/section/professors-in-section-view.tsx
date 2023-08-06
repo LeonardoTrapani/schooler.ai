@@ -1,22 +1,32 @@
-import { Professor, ProfessorSection, Subject } from "@prisma/client"
+import {
+  Class,
+  Professor,
+  ProfessorSection,
+  Section,
+  Subject,
+} from "@prisma/client"
 
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { ProfessorSectionCreate } from "@/components/professor-sections/professor-section-create"
 
 interface ProfessorsInSectionViewProps {
   sectionId: string
+  section: Pick<Section, "id" | "name"> & {
+    classes: Pick<Class, "id">[]
+    professorSections: Pick<ProfessorSection, "id" | "totalClasses">[]
+  }
   professors: (Pick<Professor, "id" | "name"> & {
     subjects: Pick<Subject, "id" | "name">[]
   })[]
-  professorSection: (Pick<ProfessorSection, "id" | "totalClasses"> & {
+  professorSections: (Pick<ProfessorSection, "id" | "totalClasses"> & {
     professor: Pick<Professor, "name" | "id">
   })[]
 }
 
 export function ProfessorsInSectionView({
-  sectionId,
+  section,
   professors,
-  professorSection: professorSections,
+  professorSections,
 }: ProfessorsInSectionViewProps) {
   return (
     <div className="flex flex-col">
@@ -33,7 +43,7 @@ export function ProfessorsInSectionView({
             }}
             from="section"
             professors={professors}
-            sectionId={sectionId}
+            section={section}
           />
         </EmptyPlaceholder>
       ) : (

@@ -45,7 +45,6 @@ export async function verifyCurrentUserHasAccessToProfessorWithSubject(
     },
   })
 
-  console.log({ count, professorId, subjectId })
   return count > 0
 }
 

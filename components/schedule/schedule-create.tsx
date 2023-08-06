@@ -128,9 +128,8 @@ export function ScheduleCreate({
 
     const formattedScheduleDays: FormData[] = []
     scheduleDays.forEach((scheduleDay, i) => {
-      console.log(scheduleDay)
       scheduleDay.forEach((classData) => {
-        formattedScheduleDays.push({ ...classData, day: i + 1 })
+        formattedScheduleDays.push({ ...classData, day: i + 1, id: undefined })
       })
     })
 

@@ -3,7 +3,13 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Professor, Section, Subject } from "@prisma/client"
+import {
+  Class,
+  Professor,
+  ProfessorSection,
+  Section,
+  Subject,
+} from "@prisma/client"
 import { DialogProps } from "@radix-ui/react-alert-dialog"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -50,7 +56,10 @@ type ProfessorSectionCreateProps = DialogProps & {
 } & (
     | {
         from: "section"
-        sectionId: string
+        section: Pick<Section, "id" | "name"> & {
+          classes: Pick<Class, "id">[]
+          professorSections: Pick<ProfessorSection, "id" | "totalClasses">[]
+        }
         professors: (Pick<Professor, "id" | "name"> & {
           subjects: Pick<Subject, "id" | "name">[]
         })[]
@@ -63,22 +72,20 @@ type ProfessorSectionCreateProps = DialogProps & {
         professor: Pick<Professor, "id" | "name"> & {
           subjects: Pick<Subject, "id" | "name">[]
         }
-        sections: Pick<Section, "id" | "name">[]
+        sections: (Pick<Section, "id" | "name"> & {
+          classes: Pick<Class, "id">[]
+          professorSections: Pick<ProfessorSection, "id" | "totalClasses">[]
+        })[]
 
         professors?: undefined
-        sectionId?: undefined
+        section?: undefined
       }
     | {
         from?: undefined
-
-        professor?: Pick<Professor, "id" | "name"> & {
-          subjects: Pick<Subject, "id" | "name">[]
-        }
-        sections?: Pick<Section, "id" | "name">[]
-        sectionId?: string
-        professors?: (Pick<Professor, "id" | "name"> & {
-          subjects: Pick<Subject, "id" | "name">[]
-        })[]
+        professor?: undefined
+        section?: undefined
+        professors?: undefined
+        sections?: undefined
       }
   )
 
@@ -88,7 +95,7 @@ export function ProfessorSectionCreate({
   buttonProps,
   from,
   sections,
-  sectionId,
+  section,
   professors,
   professor,
   ...props
@@ -96,13 +103,44 @@ export function ProfessorSectionCreate({
   const router = useRouter()
   const [open, setOpen] = React.useState<boolean>(false)
   const [adding, setAdding] = React.useState<boolean>(false)
+  const [maxClasses, setMaxClasses] = React.useState<number>(0)
+
   const form = useForm<FormData>({
     resolver: zodResolver(postProfessorSectionsSchema),
     defaultValues: {
-      sectionId,
+      sectionId: section?.id,
       professorId: professor?.id,
     },
   })
+
+  const sectionId = form.watch("sectionId")
+
+  React.useEffect(() => {
+    if (from === "section") {
+      const totalClasses = section.professorSections.reduce(
+        (acc, professorSection) => acc + professorSection.totalClasses,
+        0
+      )
+      setMaxClasses(section.classes.length - totalClasses)
+    }
+    if (from === "professor") {
+      const currentSection = sections.find(
+        (section) => section.id === sectionId
+      )
+      if (!currentSection) return
+      const totalClasses = currentSection.professorSections.reduce(
+        (acc, professorSection) => acc + professorSection.totalClasses,
+        0
+      )
+      setMaxClasses(currentSection.classes.length - totalClasses)
+    }
+  }, [
+    from,
+    section?.classes.length,
+    section?.professorSections,
+    sectionId,
+    sections,
+  ])
 
   const onSubmit = async (data: FormData) => {
     setAdding(true)
@@ -120,11 +158,14 @@ export function ProfessorSectionCreate({
     setAdding(false)
 
     if (!response?.ok) {
-      if (response?.status === 409) {
+      const data = await response.json()
+      if (
+        (response?.status === 409 || response.status === 422) &&
+        typeof data === "string"
+      ) {
         return toast({
           title: "Something went wrong.",
-          description:
-            "The professor with this subject was already added to this section. Consider editing the professor instead, or adding him again with some other subject.",
+          description: data,
           variant: "destructive",
         })
       }
@@ -401,12 +442,14 @@ export function ProfessorSectionCreate({
               name="totalClasses"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="professor">Total Classes</FormLabel>
+                  <FormLabel htmlFor="total classes">
+                    Total Classes ({maxClasses} left to assign)
+                  </FormLabel>
                   <Input
                     id="name"
-                    type="number"
                     className="max-w-[400px]"
-                    placeholder="4"
+                    max={maxClasses}
+                    placeholder="2"
                     size={32}
                     {...field}
                   />

@@ -25,12 +25,40 @@ export async function POST(req: Request) {
         parsedBody.professorId,
         parsedBody.subjectId
       )
+
     const hasAccessToSection = await verifyCurrentUserHasAccessToSection(
       user.id,
       parsedBody.sectionId
     )
     if (!hasAccessToProfessorWithSubject || !hasAccessToSection) {
       return new Response(null, { status: 403 })
+    }
+
+    const totalClasses = await db.class.count({
+      where: {
+        sectionId: parsedBody.sectionId,
+      },
+    })
+    const professorSections = await db.professorSection.findMany({
+      where: {
+        sectionId: parsedBody.sectionId,
+      },
+    })
+    const totalClassesAssigned = professorSections.reduce(
+      (acc, professorSection) => acc + professorSection.totalClasses,
+      0
+    )
+
+    const totalClassesLeft = totalClasses - totalClassesAssigned
+    const hasEnoughClasses = totalClassesLeft - parsedBody.totalClasses >= 0
+
+    if (!hasEnoughClasses) {
+      return new Response(
+        JSON.stringify(
+          `The section doesn't have enough classes to cover the total classes of the professor (${totalClassesLeft} classes left to assign).`
+        ),
+        { status: 422 }
+      )
     }
 
     const existingProfessorSection = await db.professorSection.findFirst({
@@ -42,9 +70,14 @@ export async function POST(req: Request) {
     })
 
     if (existingProfessorSection) {
-      return new Response(`This professor is already teaching this section.`, {
-        status: 409,
-      })
+      return new Response(
+        JSON.stringify(
+          `The professor with this subject was already added to this section. Consider editing the professor instead, or adding him again with some other subject.`
+        ),
+        {
+          status: 409,
+        }
+      )
     }
 
     const professorSection = await db.professorSection.create({

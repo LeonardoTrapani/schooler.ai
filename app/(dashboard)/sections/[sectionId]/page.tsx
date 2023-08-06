@@ -142,13 +142,14 @@ export default async function SectionPage({ params }: SectionPageProps) {
           >
             <ProfessorSectionCreate
               from="section"
-              sectionId={section.id}
+              section={section}
               professors={professors}
             />
           </DashboardInnerPage.SectionHeader>
           <ProfessorsInSectionView
             professors={professors}
-            professorSection={section.professorSections}
+            section={section}
+            professorSections={section.professorSections}
             sectionId={section.id}
           />
         </DashboardInnerPage.Section>
